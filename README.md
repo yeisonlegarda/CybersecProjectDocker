@@ -26,7 +26,6 @@ Posibles Problemas y Soluciones :
 
     En caso de que las imagenes generen errores de espacio en memoria (ENOESPC, No space left) se recomienda que al correr el contenedor se cierren los editores de texto abiertos.
 
-    En caso de que la base de datos no suba el backup se recomienda que el nombre de usuario dela base de datos en elarchivo code.conf coincida con el nombre de usuario con el que se realizo el backup
 
 Ejecutar EL contenedor:
 

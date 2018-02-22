@@ -7,6 +7,7 @@ services:
         - POSTGRES_USER=${DB_BUILD_USER}
         - POSTGRES_PASSWORD=${DB_BUILD_PASS}
         - POSTGRES_DB=${DB_BUILD_NAME}
+        - SCHEMASPY_SCHEMA=${SCHEMASPY_SCHEMA}
       ports:
         - '5432:5432'
       user: "$USER_ID"
