@@ -1,0 +1,6 @@
+workspace/angular/*
+workspace/go/*
+database
+apache2
+.env_secret.env
+bkup/*
