@@ -38,7 +38,7 @@ services:
           - USER_ID=$USER_ID
     env_file:
       - .env_secret.env
-    command: sh -c 'go get github.com/udistrital/$CRUD_GET_INFO;cd src/github.com/udistrital/$CRUD_GET_INFO;git checkout $CRUD_BRANCH_TARGET;git pull origin $CRUD_BRANCH_TARGET;bee run'
+    command: sh -c 'go get -u github.com/udistrital/$CRUD_GET_INFO;cd src/github.com/udistrital/$CRUD_GET_INFO;git checkout $CRUD_BRANCH_TARGET;git pull origin $CRUD_BRANCH_TARGET;bee run'
     ports:
       - '${CRUD_PORT}:${CRUD_PORT}'
     volumes:
@@ -57,7 +57,7 @@ services:
           - USER_ID=$USER_ID
     env_file:
       - .env_secret.env
-    command: sh -c 'go get github.com/udistrital/$MID_GET_INFO;cd src/github.com/udistrital/$MID_GET_INFO;git checkout $MID_BRANCH_TARGET;git pull origin $MID_BRANCH_TARGET;bee run'
+    command: sh -c 'go get -u github.com/udistrital/$MID_GET_INFO;cd src/github.com/udistrital/$MID_GET_INFO;git checkout $MID_BRANCH_TARGET;git pull origin $MID_BRANCH_TARGET;bee run'
     ports:
       - '$MID_PORT:$MID_PORT'
     volumes:
