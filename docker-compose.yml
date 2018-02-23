@@ -24,6 +24,11 @@ services:
           - ./workspace/angular/schemaspy:/output
       links:
           - postgresdb:database
+      environment:
+        - POSTGRES_USER=${DB_BUILD_USER}
+        - POSTGRES_PASSWORD=${DB_BUILD_PASS}
+        - POSTGRES_DB=${DB_BUILD_NAME}
+        - SCHEMASPY_SCHEMA=${SCHEMASPY_SCHEMA}
   crud:
     #image: golang:1.8
     build: 
