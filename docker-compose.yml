@@ -1,93 +1,17 @@
 version: "2"
 
 services:
-  postgresdb:
-      image: postgres:9.5
-      environment:
-        - POSTGRES_USER=${DB_BUILD_USER}
-        - POSTGRES_PASSWORD=${DB_BUILD_PASS}
-        - POSTGRES_DB=${DB_BUILD_NAME}
-        - SCHEMASPY_SCHEMA=${SCHEMASPY_SCHEMA}
-      ports:
-        - '5432:5432'
-      user: "$USER_ID"
-      volumes:
-          - ./database:/var/lib/postgresql/data
-          - ./bkup:/bkup
-          - /etc/passwd:/etc/passwd:ro
-  schemaspy:
-      build:
-        context: ./schemaspy_build
-        args:
-          - PROXY=$PROXY
-      volumes:
-          - ./workspace/angular/schemaspy:/output
-      links:
-          - postgresdb:database
-      environment:
-        - POSTGRES_USER=${DB_BUILD_USER}
-        - POSTGRES_PASSWORD=${DB_BUILD_PASS}
-        - POSTGRES_DB=${DB_BUILD_NAME}
-        - SCHEMASPY_SCHEMA=${SCHEMASPY_SCHEMA}
-  crud:
-    #image: golang:1.8
-    build: 
-      context: ./bee_build
-      args:
-          - PROXY=$PROXY
-          - USER_ID=$USER_ID
-    env_file:
-      - .env_secret.env
-    command: sh -c 'go get -u github.com/udistrital/$CRUD_GET_INFO;cd src/github.com/udistrital/$CRUD_GET_INFO;git checkout $CRUD_BRANCH_TARGET;git pull origin $CRUD_BRANCH_TARGET;bee run'
-    ports:
-      - '${CRUD_PORT}:${CRUD_PORT}'
-    volumes:
-      - ./workspace/go/src/github.com/udistrital/:/home/developer/go/src/github.com/udistrital/
-      - /etc/passwd:/etc/passwd:ro
-    user: "$USER_ID"
-    depends_on:
-      - postgresdb
-
-  mid:
-    #image: golang:1.8
-    build: 
-      context: ./bee_build
-      args:
-          - PROXY=$PROXY
-          - USER_ID=$USER_ID
-    env_file:
-      - .env_secret.env
-    command: sh -c 'go get -u github.com/udistrital/$MID_GET_INFO;cd src/github.com/udistrital/$MID_GET_INFO;git checkout $MID_BRANCH_TARGET;git pull origin $MID_BRANCH_TARGET;bee run'
-    ports:
-      - '$MID_PORT:$MID_PORT'
-    volumes:
-      - ./workspace/go/src/github.com/udistrital/:/home/developer/go/src/github.com/udistrital/
-      - /etc/passwd:/etc/passwd:ro
-    user: "$USER_ID"
-    depends_on:
-      - crud
-  apache2:
-    image: httpd:2.4-alpine
-    ports:
-     - "80:80"
-    volumes:
-     - ./apache2/sites-enabled:/etc/apache2/sites-enabled
-     - ./workspace/angular:/usr/local/apache2/htdocs/
   client:
     build:
-      context: ./genoas_build
+      context: ./cybersec_build
       args:
-        - PROXY=$PROXY
         - USER_ID=$USER_ID
     env_file:
       - .env_secret.env
-    command: sh -c 'git clone https://github.com/udistrital/$CLIENT_CLONE_INFO.git ;cd $CLIENT_CLONE_INFO;git checkout $CLIENT_BRANCH_TARGET;git pull origin $CLIENT_BRANCH_TARGET;npm dedupe;npm install; bower install; grunt serve'
+    command: sh -c 'git clone https://github.com/yeisonlegarda/CybersecBlockChainClient.git;cd CybersecBlockChainClient;npm dedupe;npm install;npm install web3@0.20.6;ng serve --host 0.0.0.0'
     ports:
-      - '$CLIENT_PORT:$CLIENT_PORT'
+      - '4200:4200'
       - '35729:35729'
-    depends_on:
-      - crud
-      - mid
     volumes:
       - ./workspace/angular:/workspace/angular
     user: "$USER_ID"
